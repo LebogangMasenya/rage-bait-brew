@@ -1,5 +1,3 @@
-
-
 <style>
   :host {
     --bright-blue: oklch(51.01% 0.274 263.83);
@@ -13,19 +11,15 @@
     --gray-700: oklch(36.98% 0.014 302.71);
     --gray-400: oklch(70.9% 0.015 304.04);
 
-    --red-to-pink-to-purple-vertical-gradient: linear-gradient(
-      180deg,
-      var(--orange-red) 0%,
-      var(--vivid-pink) 50%,
-      var(--electric-violet) 100%
-    );
+    --red-to-pink-to-purple-vertical-gradient: linear-gradient(180deg,
+        var(--orange-red) 0%,
+        var(--vivid-pink) 50%,
+        var(--electric-violet) 100%);
 
-    --red-to-pink-to-purple-horizontal-gradient: linear-gradient(
-      90deg,
-      var(--orange-red) 0%,
-      var(--vivid-pink) 50%,
-      var(--electric-violet) 100%
-    );
+    --red-to-pink-to-purple-horizontal-gradient: linear-gradient(90deg,
+        var(--orange-red) 0%,
+        var(--vivid-pink) 50%,
+        var(--electric-violet) 100%);
 
     --pill-accent: var(--bright-blue);
 
@@ -129,9 +123,11 @@
   .pill-group .pill:nth-child(6n + 1) {
     --pill-accent: var(--bright-blue);
   }
+
   .pill-group .pill:nth-child(6n + 2) {
     --pill-accent: var(--electric-violet);
   }
+
   .pill-group .pill:nth-child(6n + 3) {
     --pill-accent: var(--french-violet);
   }
@@ -178,7 +174,38 @@
 </style>
 
 <main class="main">
+  <div class="form-stepper">
+    <p-stepper [(value)]="activeStep" class="basis-[40rem]">
+    <p-step-list>
+      <p-step label="Identity" [value]="1" icon="pi pi-user"></p-step>
+      <p-step label="Base" [value]="2" icon="pi pi-coffee"></p-step>
+      <p-step label="Ingredients" [value]="3" icon="pi pi-cog"></p-step>
+      <p-step label="Payment" [value]="4" icon="pi pi-credit-card"></p-step>
+      <p-step label="Success" [value]="5" icon="pi pi-check"></p-step>
+    </p-step-list>
+    <p-step-panels>
+      <p-step-panel [value]="1">
+        <identity-stage></identity-stage>
+      </p-step-panel>
+      <p-step-panel [value]="2">
+        <base-stage></base-stage>
+      </p-step-panel>
+      <p-step-panel [value]="3">
+        <ingredient-stage></ingredient-stage>
+      </p-step-panel>
+      <p-step-panel [value]="4">
+        <payment-stage></payment-stage>
+      </p-step-panel>
+      <p-step-panel [value]="5">
+        <success-stage></success-stage>
+      </p-step-panel>
+    </p-step-panels>
 
+
+
+    </p-stepper>
+
+  </div>
 </main>
 
 
