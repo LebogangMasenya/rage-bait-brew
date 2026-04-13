@@ -17,4 +17,9 @@ import { SuccessStageComponent } from './components/success-stage/success.compon
 export class App {
   protected readonly title = signal('rage-bait-brew');
   protected activeStep = signal(1);
+
+  goToStep(step: number) {
+    this.activeStep.set(step);
+  }
+
 }
