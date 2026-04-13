@@ -190,16 +190,24 @@
             </ng-template>      
       </p-step-panel>
       <p-step-panel [value]="2">
-        <base-stage></base-stage>
+        <ng-template #content let-activateCallback="activateCallback">
+                <base-stage [onNext]="activateCallback"></base-stage>
+          </ng-template>
       </p-step-panel>
       <p-step-panel [value]="3">
-        <ingredient-stage></ingredient-stage>
+        <ng-template #content let-activateCallback="activateCallback">
+                <ingredient-stage [onNext]="activateCallback"></ingredient-stage>
+          </ng-template>
       </p-step-panel>
       <p-step-panel [value]="4">
-        <payment-stage></payment-stage>
+        <ng-template #content let-activateCallback="activateCallback">
+                <payment-stage [onNext]="activateCallback"></payment-stage>
+          </ng-template>
       </p-step-panel>
       <p-step-panel [value]="5">
-        <success-stage></success-stage>
+        <ng-template #content let-activateCallback="activateCallback">
+                <success-stage [onNext]="activateCallback"></success-stage>
+          </ng-template>
       </p-step-panel>
     </p-step-panels>
 
