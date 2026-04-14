@@ -220,7 +220,7 @@ export class IngredientStageComponent implements OnInit, OnDestroy {
   ingredientForm = new FormGroup({
     coffeeType: new FormControl('', Validators.required),
     milkType: new FormControl('', Validators.required),
-    sugarAmount: new FormControl(0, Validators.min(0)),
+    sugarAmount: new FormControl(0),
     extras: new FormControl([] as string[])
   });
 
@@ -254,6 +254,7 @@ export class IngredientStageComponent implements OnInit, OnDestroy {
         sugarAmount: this.ingredientForm.value.sugarAmount || 0,
         extras: this.ingredientForm.value.extras || []
       });
+      
       this.onNext(4);
     }
   }

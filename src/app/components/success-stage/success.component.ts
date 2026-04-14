@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
         <h3>Your Order Summary</h3>
         <p><strong>Identity:</strong> {{ orderIdentity }}</p>
         <p><strong>Base:</strong> {{ orderBase }}</p>
-        <p><strong>Ingredients:</strong> {{ orderIngredients?.join(', ') }}</p>
+        <p><strong>Ingredients:</strong> {{ orderIngredients.join(', ') }}</p>
         <p><strong>Payment:</strong> {{ orderPayment }}</p>
       </section>
 
@@ -178,14 +178,26 @@ export class SuccessStageComponent implements OnInit {
   private readonly GIVE_UP_THRESHOLD = 7;
 
   ngOnInit() {
-    this.orderService.updateState('success', { message: 'Your coffee is ready!' });
-
 const state = this.orderService.getState();
-  this.orderIdentity    = state.identity?.name             ?? 'Unknown Customer';
-  this.orderBase        = state.base?.coffeeSize            ?? 'Unknown Base';
-  this.orderIngredients = state.ingredients?.extras         ?? [];
-  this.orderPayment     = state.payment?.cardNumber     ?? 'Unknown Payment';
+  console.log('Final State Check:', state);
 
+  this.orderIdentity = state.identity?.name ? `${state.identity.name}` : 'Anonymous Saboteur';
+
+  this.orderBase = state.base?.coffeeSize 
+    ? `${state.base.coffeeSize} (${state.base.coffeeStrength})` 
+    : 'Liquid Chaos';
+
+  const extras = state.ingredients?.extras ? state.ingredients.extras : '';
+  const milk = state.ingredients?.milkType ? state.ingredients.milkType : '';
+  const sugar = state.ingredients?.sugarAmount ? `${state.ingredients.sugarAmount} sugar` : '';
+  this.orderIngredients = extras || [];
+
+  const rawCard = state.payment?.cardNumber || '0000000000000000';
+  this.orderPayment = `**** **** **** ${rawCard.toString().slice(-4)}`;
+
+  this.orderService.updateState('success', { 
+    message: 'Your coffee is ready!',
+  });
 }
 
   evadeButton() {

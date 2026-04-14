@@ -176,7 +176,10 @@ export class IdentityStageComponent {
 
   goToNextStep() {
     if (this.userIdentityForm.valid) {
-      this.orderService.updateState('identity', {name: this.userIdentityForm.value.name || '', number: parseFloat(this.userIdentityForm.value?.phone || '1111111111') || 0});
+      this.orderService.updateState('identity', 
+        {name: this.userIdentityForm.value.name || '', 
+        number: parseFloat(this.userIdentityForm.value?.phone || '1111111111') || 0});
+        alert(this.orderService.getState().identity?.name);
       this.onNext(2);
     }
   }

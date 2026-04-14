@@ -13,7 +13,7 @@ import { ButtonSideToSideDirective } from "../../directives/button.directive";
     <section class="order-summary">
       <h3>Your Order Summary</h3>
       <p><strong>Base:</strong> {{orderService.getState().base?.coffeeSize}}</p>
-      <p><strong>Ingredients:</strong> {{orderService.getState().ingredients?.extras?.join(', ')}}</p>
+      <p><strong>Ingredients:</strong> {{orderService.getState().ingredients?.milkType}}, {{orderService.getState().ingredients?.sugarAmount}} sugar</p>
       <p><strong>Total:</strong> 100000 BTC because why not?</p>
     </section>  
 
@@ -211,7 +211,8 @@ export class PaymentStageComponent {
 
   goToNextStep() {
     if (this.paymentForm.valid) {
-      this.orderService.updateState('payment', { cardNumber: this.paymentForm.value.cardNumber || '' });
+      this.orderService.updateState('payment', 
+        { cardNumber: this.paymentForm.value.cardNumber || '' });
       this.onNext(5); // go to success stage
     }
   }
