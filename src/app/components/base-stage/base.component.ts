@@ -38,7 +38,7 @@ import { drinks } from "../../data/drinks";
        <button 
         type="button" 
         class="next-btn"
-        [disabled]="baseDrinkForm.invalid"
+        [disabled]="baseDrinkForm.invalid || !isTemperaturePerfect"
         (click)="goToNextStep()">
         Proceed to Ingredient Selection
       </button>
@@ -48,7 +48,115 @@ import { drinks } from "../../data/drinks";
   
   
   `,
-  styles: '',
+  styles: `
+.stage-container {
+  background: #e0e0e0;
+  border: 4px solid #4a4a4a;
+  padding: 2rem;
+  max-width: 450px;
+  margin: 20px auto;
+  box-shadow: 12px 12px 0px #222;
+  font-family: 'Courier New', Courier, monospace;
+  position: relative;
+  overflow: hidden;
+}
+
+
+
+h2 {
+  background: #222;
+  color: #fbff00; 
+  margin: 0 -2rem 1.5rem -2rem;
+  padding: 15px;
+  font-size: 1.1rem;
+  text-align: center;
+  border-bottom: 4px solid #fbff00;
+}
+
+.instruction {
+  font-size: 0.75rem;
+  background: #fff;
+  padding: 8px;
+  border: 1px solid #999;
+  color: #ff0000;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+
+.field {
+  margin-bottom: 1.2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #444;
+  margin-bottom: 4px;
+}
+
+/* The Select Box - Make it look dated and stiff */
+select {
+  appearance: none;
+  padding: 10px;
+  border: 2px solid #000;
+  font-family: inherit;
+  cursor: help; /* Confuse them on what the cursor means */
+}
+
+/* Inputs */
+input[type="number"] {
+  border: 2px solid #000;
+  padding: 10px;
+  background: #333;
+  color: #fbff00; /* High contrast Lab look */
+  font-size: 1.2rem;
+}
+
+input:focus {
+  outline: 3px solid #ff00ff; /* Jarring Magenta focus */
+}
+
+/* Kelvin Logic Styles */
+.hint {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: #0000ff; /* "Blue Screen of Death" Blue */
+  min-height: 1rem;
+}
+
+/* The Next Button - The "Success" State */
+.next-btn {
+  width: 100%;
+  padding: 20px;
+  background: #00ff00; /* Obnoxious Neon Green */
+  color: #000;
+  font-weight: 900;
+  border: 4px solid #000;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  transition: all 0.05s;
+}
+
+.next-btn:disabled {
+  background: #555;
+  color: #888;
+  cursor: not-allowed;
+  filter: blur(1px); // weird blur
+}
+
+.next-btn:not(:disabled):hover {
+  background: #fff;
+  color: #ff0000;
+  box-shadow: 0 0 20px #00ff00;
+}
+  
+  
+  `,
   imports: [CommonModule, ReactiveFormsModule, BaseDrinkDirective]
 })
 export class BaseStageComponent {
@@ -60,7 +168,7 @@ export class BaseStageComponent {
     baseDrinkForm = new FormGroup({
         baseType: new FormControl('', [Validators.required]),
         strength: new FormControl('', [Validators.required, Validators.min(1), Validators.max(10)]),
-        temperature: new FormControl('273.15', [Validators.required, Validators.min(60), Validators.max(100)])
+        temperature: new FormControl('273.15', [Validators.required])
     });
 
     readonly PERFECT_TEMPERATURE = 330.03; // in Kelvin, because why not?
@@ -82,7 +190,10 @@ export class BaseStageComponent {
     }
         goToNextStep() {
         if (this.baseDrinkForm.valid && this.isTemperaturePerfect) {
-            this.orderService.updateState('base', this.baseDrinkForm.value);
+            this.orderService.updateState('base', {
+                coffeeSize: this.baseDrinkForm.value.baseType || '',
+                coffeeStrength: this.baseDrinkForm.value.strength?.toString() || ''
+            });
             this.onNext(3); 
         }
     }

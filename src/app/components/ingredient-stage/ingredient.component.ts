@@ -57,7 +57,7 @@ import { Subscription } from "rxjs";
             (mouseleave)="momentumService.stopSpin()">+</button>
         </div>
 
-      <input type="hidden" formControlName="sugarAmount">
+            <input type="hidden" formControlName="sugarAmount">
       </div>
 
 
@@ -72,12 +72,143 @@ import { Subscription } from "rxjs";
   </form>
   
   `,
-  styles: '',
+  styles: `
+.stage-container {
+  background: #d4e0d4; /* Hospital green/grey */
+  border: 4px double #2d5a27;
+  padding: 2rem;
+  max-width: 450px;
+  margin: 20px auto;
+  box-shadow: 0 0 15px rgba(45, 90, 39, 0.4);
+  font-family: 'Trebuchet MS', sans-serif;
+  position: relative;
+}
+
+h2 {
+  background: #2d5a27;
+  color: #fbff00; 
+  margin: 0 -2rem 1.5rem -2rem;
+  padding: 15px;
+  font-size: 1.1rem;
+  text-align: center;
+  border-bottom: 4px solid #fbff00;
+}
+
+
+.instruction {
+  background: #000;
+  color: #ff3300;
+  padding: 5px;
+  font-size: 0.7rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  transition: all 0.2s ease-in-out;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+  border: 1px transparent;
+}
+
+.option:hover {
+  background: #fff;
+  color: #2d5a27;
+  border: 1px solid #2d5a27;
+  cursor: help;
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #000;
+  padding: 15px;
+  border-radius: 50px; /* Pill shape */
+  color: #a4ff8e;
+  margin: 10px 0;
+}
+
+.input-row button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #a4ff8e;
+  background: transparent;
+  color: #a4ff8e;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+.input-row button:active {
+  background: #ff3300;
+  color: #000;
+  transform: scale(0.9);
+}
+
+.input-row span {
+  font-family: 'Courier New', monospace; 
+  font-size: 2rem;
+  text-shadow: 0 0 10px #a4ff8e;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  background: #fff;
+  border: 2px solid #2d5a27;
+  color: #2d5a27;
+  font-weight: bold;
+}
+
+
+.next-btn {
+  width: 100%;
+  margin-top: 25px;
+  padding: 15px;
+  background: #2d5a27;
+  color: #a4ff8e;
+  border: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  animation: jitter 3s infinite;
+}
+
+.next-btn:disabled {
+  background: #bcbcbc;
+  color: #777;
+  animation: none;
+  cursor: not-allowed;
+}
+
+/* Subtle jitter animation for the final button */
+@keyframes jitter {
+  0% { transform: scale(1); }
+  98% { transform: scale(1); }
+  99% { transform: scale(1.02) rotate(1deg); }
+  100% { transform: scale(1); }
+}
+  
+  `,
   imports: [CommonModule, ReactiveFormsModule]
 })
 export class IngredientStageComponent implements OnInit, OnDestroy {
   // for choosing the ingredients of the coffee
-    @Input() onNext!: (nextStage: number) => void;
+  @Input() onNext!: (nextStage: number) => void;
 
   orderService = inject(OrderService);
   momentumService = inject(MomentumService);
@@ -96,7 +227,7 @@ export class IngredientStageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // subscribe to the momentum service to update the sugar amount in the form whenever it changes
     this.momentumSubscription = this.momentumService.sugarValue$.subscribe(value => {
-     this.ingredientForm.patchValue({ sugarAmount: Math.round(value) }, { emitEvent: false }); // update form without emitting another event to avoid loops
+      this.ingredientForm.patchValue({ sugarAmount: Math.round(value) }, { emitEvent: false }); // update form without emitting another event to avoid loops
     });
   }
 
@@ -116,8 +247,13 @@ export class IngredientStageComponent implements OnInit, OnDestroy {
 
 
   goToNextStep() {
-    if (this.ingredientForm.valid) {
-      this.orderService.updateState('ingredients', this.ingredientForm.value);
+    if (this.ingredientForm.valid)  {
+      this.orderService.updateState('ingredients', {
+        coffeeType: this.ingredientForm.value.coffeeType || '',
+        milkType: this.ingredientForm.value.milkType || '',
+        sugarAmount: this.ingredientForm.value.sugarAmount || 0,
+        extras: this.ingredientForm.value.extras || []
+      });
       this.onNext(4);
     }
   }

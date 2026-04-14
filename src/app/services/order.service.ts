@@ -1,23 +1,16 @@
 import { Injectable } from "@angular/core";
+import {type  OrderState } from "../data/order.model";
 @Injectable({
     providedIn: 'root'
 })
 export class OrderService {
-    private orderState = {
-        identity: null,
-        base: null,
-        ingredients: [],
-        payment: null
-    }
+   private state: OrderState = {};
 
-    updateState(stage: string, data: any) {
-        this.orderState = {
-            ...this.orderState,
-            [stage]: data
-        }
-    }
+  updateState<K extends keyof OrderState>(stage: K, data: OrderState[K]) {
+    this.state = { ...this.state, [stage]: data };
+  }
 
-    getState() {
-        return this.orderState;
-    }
+  getState(): OrderState {
+    return this.state;
+  }
 }

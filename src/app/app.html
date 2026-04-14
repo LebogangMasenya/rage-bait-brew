@@ -206,7 +206,7 @@
         </p-step-panel>
         <p-step-panel [value]="5">
           <ng-template #content let-activateCallback="activateCallback">
-            <success-stage [onNext]="activateCallback"></success-stage>
+            <success-stage [onNext]="activateCallback" (orderRestarted)="handleRestart()"></success-stage>
           </ng-template>
         </p-step-panel>
       </p-step-panels>

@@ -22,4 +22,7 @@ export class App {
     this.activeStep.set(step);
   }
 
+  handleRestart() {
+    this.activeStep.set(1);
+  }
 }

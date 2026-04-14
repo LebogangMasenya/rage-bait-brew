@@ -49,25 +49,116 @@ import { CommonModule } from '@angular/common';
     </div>
   `,
   styles: `
-    .coffee-hunt-arena {
-      position: relative;
-      width: 100%;
-      height: 160px;
-      border: 0.5px dashed var(--color-border-secondary);
-      border-radius: var(--border-radius-md);
-      overflow: hidden;
-      margin: 1rem 0;
-    }
-    .gave-up-msg { font-size: 13px; color: var(--color-text-secondary); }
+
+  .success-message {
+  background: #ffffff;
+  border: 5px solid #00ff00; 
+  padding: 2rem;
+  max-width: 450px;
+  margin: 20px auto;
+  text-align: center;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive; 
+}
+
+h2 {
+  color: #ff00ff;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+}
+
+p {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+
+.order-summary {
+  background: #000;
+  color: #00ff00;
+  padding: 15px;
+  margin: 20px 0;
+  text-align: left;
+  font-family: 'Courier New', monospace;
+  border-radius: 0;
+  border: 2px dashed #00ff00;
+}
+
+.order-summary h3 {
+  border-bottom: 1px solid #00ff00;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+}
+
+.order-summary p {
+  font-size: 0.8rem;
+  margin: 5px 0;
+  color: #00ff00;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.coffee-hunt-arena {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  background: #eee;
+  background-image: radial-gradient(#ccc 1px, transparent 1px);
+  background-size: 20px 20px;
+  border: 4px inset #fff;
+  border-radius: 0;
+  overflow: hidden;
+  margin: 1.5rem 0;
+  cursor: crosshair; 
+}
+
+.find-coffee-btn {
+  background: #ff00ff;
+  color: white;
+  border: 2px solid #000;
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 100;
+  white-space: nowrap;
+  box-shadow: 3px 3px 0px #000;
+}
+
+
+.gave-up-msg {
+  background: #ffffcc;
+  padding: 10px;
+  border: 1px solid #999;
+  font-size: 12px;
+  color: #333;
+}
+
+.gave-up-msg button {
+  background: transparent;
+  text-decoration: underline;
+  border: none;
+  color: blue;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.restart-btn {
+  margin-top: 30px;
+  padding: 10px 30px;
+  background: #d0d0d0;
+  border: 2px outset #fff;
+  font-family: 'Arial', sans-serif;
+  cursor: pointer;
+}
+
+.restart-btn:active {
+  border-style: inset;
+}
   `
 })
 export class SuccessStageComponent implements OnInit {
-  @Input()  onNext!: (nextStage: number) => void;
+  @Input() onNext!: (nextStage: number) => void;
 
-  // emits when the user actually collects their coffee
-  @Output() coffeeCollected = new EventEmitter<{ collectedAt: Date }>();
-
-  // emits when they give up and restart
   @Output() orderRestarted = new EventEmitter<void>();
 
   orderService = inject(OrderService);
@@ -89,12 +180,13 @@ export class SuccessStageComponent implements OnInit {
   ngOnInit() {
     this.orderService.updateState('success', { message: 'Your coffee is ready!' });
 
-    const summary = this.orderService.getState();
-    this.orderIdentity = summary.identity ?? 'Unknown Customer';
-    this.orderBase     = summary.base ?? 'Unknown Base';
-    this.orderIngredients = summary.ingredients ?? [];
-    this.orderPayment  = summary.payment ?? 'Unknown Payment';
-  }
+const state = this.orderService.getState();
+  this.orderIdentity    = state.identity?.name             ?? 'Unknown Customer';
+  this.orderBase        = state.base?.coffeeSize            ?? 'Unknown Base';
+  this.orderIngredients = state.ingredients?.extras         ?? [];
+  this.orderPayment     = state.payment?.cardNumber     ?? 'Unknown Payment';
+
+}
 
   evadeButton() {
     this.evadeCount++;
@@ -119,9 +211,7 @@ export class SuccessStageComponent implements OnInit {
   }
 
   onCoffeeFound() {
-    this.coffeeCollected.emit({ collectedAt: new Date() });
-
-    //trigger rick roll because why not
+    //trigger rick roll 
     window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank');
   }
 

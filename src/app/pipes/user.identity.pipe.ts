@@ -18,6 +18,6 @@ export class UserIdentityPipe implements PipeTransform {
       return char;
     }).join('');
 
-    return `${shifted} (Shifted by ${shift})`; // Just to show off the shift amount, because why not?
+    return `${shifted}`; 
   }
 }
