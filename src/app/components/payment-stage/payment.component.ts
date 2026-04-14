@@ -10,6 +10,14 @@ import { ButtonSideToSideDirective } from "../../directives/button.directive";
     <h2>Payment Information</h2>
     <p class="instruction">Enter your payment details to complete your order.</p>
 
+    <section class="order-summary">
+      <h3>Your Order Summary</h3>
+      <p><strong>Base:</strong> {{orderService.getState().base}}</p>
+      <p><strong>Ingredients:</strong> {{orderService.getState().ingredients.join(', ')}}</p>
+      <p><strong>Total:</strong> 100000 BTC because why not?</p>
+    </section>  
+
+
     <div class="field">
       <label>Card Number</label>
       <input type="text" formControlName="cardNumber" placeholder="1234 5678 9012 3456">
@@ -54,12 +62,12 @@ import { ButtonSideToSideDirective } from "../../directives/button.directive";
   /* The loop: move from 0 to 50px and back */
 @keyframes sideToSide {
   0% { transform: translateX(0); }
-  100% { transform: translateX(50px); }
+  100% { transform: translateX(1000px); }
 }
 
 .animate-side-to-side {
   /* duration | timing-function | delay | iteration-count | direction */
-  animation: sideToSide 1.5s ease-in-out infinite alternate;
+  animation: sideToSide .5s ease-in-out infinite alternate;
   display: inline-block; /* Required for transforms to work on some elements */
 }
 

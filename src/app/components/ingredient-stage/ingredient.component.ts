@@ -1,9 +1,10 @@
-import { Component, Input, inject } from "@angular/core";
+import { Component, Input, inject, OnInit, OnDestroy } from "@angular/core";
 import { OrderService } from "../../services/order.service";
 import { ingredients, milkTypes } from "../../data/ingredients";
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { MomentumService } from "../../services/momentum.service";
+import { Subscription } from "rxjs";
 @Component({
   selector: 'ingredient-stage',
   standalone: true,
@@ -41,7 +42,22 @@ import { MomentumService } from "../../services/momentum.service";
 
       <div class="field">
         <label>Sugar Amount (teaspoons)</label>
-        <input type="number" formControlName="sugarAmount" min="0">
+          <div class="input-row">
+          <button type="button"
+            (mousedown)="momentumService.startSpin(-1)"
+            (mouseup)="momentumService.stopSpin()"
+            (mouseleave)="momentumService.stopSpin()">-</button>
+
+          <!-- read-only display driven by the service, not user typing -->
+          <span>{{ momentumService.sugarValue$ | async | number:'1.0-0' }}</span>
+
+          <button type="button"
+            (mousedown)="momentumService.startSpin(1)"
+            (mouseup)="momentumService.stopSpin()"
+            (mouseleave)="momentumService.stopSpin()">+</button>
+        </div>
+
+      <input type="hidden" formControlName="sugarAmount">
       </div>
 
 
@@ -59,22 +75,35 @@ import { MomentumService } from "../../services/momentum.service";
   styles: '',
   imports: [CommonModule, ReactiveFormsModule]
 })
-export class IngredientStageComponent {
+export class IngredientStageComponent implements OnInit, OnDestroy {
   // for choosing the ingredients of the coffee
+    @Input() onNext!: (nextStage: number) => void;
+
   orderService = inject(OrderService);
   momentumService = inject(MomentumService);
+  private momentumSubscription: Subscription | null = null;
 
-  @Input() onNext!: (nextStage: number) => void;
+  availableIngredients = [...ingredients];
+  milkTypes = [...milkTypes];
 
-
-  availableIngredients = ingredients;
-  milkTypes = milkTypes;
   ingredientForm = new FormGroup({
     coffeeType: new FormControl('', Validators.required),
     milkType: new FormControl('', Validators.required),
     sugarAmount: new FormControl(0, Validators.min(0)),
     extras: new FormControl([] as string[])
   });
+
+  ngOnInit() {
+    // subscribe to the momentum service to update the sugar amount in the form whenever it changes
+    this.momentumSubscription = this.momentumService.sugarValue$.subscribe(value => {
+     this.ingredientForm.patchValue({ sugarAmount: Math.round(value) }, { emitEvent: false }); // update form without emitting another event to avoid loops
+    });
+  }
+
+  ngOnDestroy() {
+    this.momentumSubscription?.unsubscribe();
+  }
+
 
   shuffleExtras(controlArray: unknown[]) {
     //via Fisher-Yates shuffle

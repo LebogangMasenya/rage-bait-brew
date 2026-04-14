@@ -14,7 +14,7 @@ import { drinks } from "../../data/drinks";
 
       <div class="field">
         <label>Base Type</label>
-        <select formControlName="baseType" baseDrink>
+        <select formControlName="baseType" >
           <option value="" disabled>Select a base</option>
           @for (drink of drinkBases; track drink) {
             <option value="{{ drink }}">{{ drink }}</option>

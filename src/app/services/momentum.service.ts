@@ -10,7 +10,7 @@ import { BehaviorSubject } from "rxjs";
     providedIn: 'root'
 })
 export class MomentumService {
-    private sugarValue$ = new BehaviorSubject<number>(1.5);
+     sugarValue$ = new BehaviorSubject<number>(1.5);
     private target = 0;
     private spinDirection = 0;
     private velocity = 0;
@@ -55,6 +55,8 @@ export class MomentumService {
 
                 if(this.spinDirection !== 0 || Math.abs(this.velocity) > 0.01) {
                     this.requestAnimationFrameId = requestAnimationFrame(update); // continue the loop if still spinning or if there's still velocity
+                } else {
+                    this.requestAnimationFrameId = null; // stop the loop if not spinning and velocity is negligible
                 }
             }
             this.requestAnimationFrameId = requestAnimationFrame(update);
