@@ -176,40 +176,40 @@
 <main class="main">
   <div class="form-stepper">
     <p-stepper [(value)]="activeStep" class="basis-[40rem]">
-    <p-step-list>
-      <p-step label="Identity" [value]="1" icon="pi pi-user"></p-step>
-      <p-step label="Base" [value]="2" icon="pi pi-coffee"></p-step>
-      <p-step label="Ingredients" [value]="3" icon="pi pi-cog"></p-step>
-      <p-step label="Payment" [value]="4" icon="pi pi-credit-card"></p-step>
-      <p-step label="Success" [value]="5" icon="pi pi-check"></p-step>
-    </p-step-list>
-    <p-step-panels>
-      <p-step-panel [value]="1" >
-        <ng-template #content let-activateCallback="activateCallback">
-                <identity-stage [onNext]="activateCallback"></identity-stage>
-            </ng-template>      
-      </p-step-panel>
-      <p-step-panel [value]="2">
-        <ng-template #content let-activateCallback="activateCallback">
-                <base-stage [onNext]="activateCallback"></base-stage>
+      <p-step-list>
+        <p-step label="Identity" [value]="1" icon="pi pi-user"></p-step>
+        <p-step label="Base" [value]="2" icon="pi pi-coffee"></p-step>
+        <p-step label="Ingredients" [value]="3" icon="pi pi-cog"></p-step>
+        <p-step label="Payment" [value]="4" icon="pi pi-credit-card"></p-step>
+        <p-step label="Success" [value]="5" icon="pi pi-check"></p-step>
+      </p-step-list>
+      <p-step-panels>
+        <p-step-panel [value]="1">
+          <ng-template #content let-activateCallback="activateCallback">
+            <identity-stage [onNext]="activateCallback"></identity-stage>
           </ng-template>
-      </p-step-panel>
-      <p-step-panel [value]="3">
-        <ng-template #content let-activateCallback="activateCallback">
-                <ingredient-stage [onNext]="activateCallback"></ingredient-stage>
+        </p-step-panel>
+        <p-step-panel [value]="2">
+          <ng-template #content let-activateCallback="activateCallback">
+            <base-stage [onNext]="activateCallback"></base-stage>
           </ng-template>
-      </p-step-panel>
-      <p-step-panel [value]="4">
-        <ng-template #content let-activateCallback="activateCallback">
-                <payment-stage [onNext]="activateCallback"></payment-stage>
+        </p-step-panel>
+        <p-step-panel [value]="3">
+          <ng-template #content let-activateCallback="activateCallback">
+            <ingredient-stage [onNext]="activateCallback"></ingredient-stage>
           </ng-template>
-      </p-step-panel>
-      <p-step-panel [value]="5">
-        <ng-template #content let-activateCallback="activateCallback">
-                <success-stage [onNext]="activateCallback"></success-stage>
+        </p-step-panel>
+        <p-step-panel [value]="4">
+          <ng-template #content let-activateCallback="activateCallback">
+            <payment-stage [onNext]="activateCallback"></payment-stage>
           </ng-template>
-      </p-step-panel>
-    </p-step-panels>
+        </p-step-panel>
+        <p-step-panel [value]="5">
+          <ng-template #content let-activateCallback="activateCallback">
+            <success-stage [onNext]="activateCallback"></success-stage>
+          </ng-template>
+        </p-step-panel>
+      </p-step-panels>
 
 
 

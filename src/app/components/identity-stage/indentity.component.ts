@@ -62,9 +62,9 @@ export class IdentityStageComponent {
     }
 
     goToNextStep() {
-        if (this.userIdentityForm.valid) {
-            this.orderService.updateState('identity', this.userIdentityForm.value);
-            this.onNext(2); 
-        }
+      if (this.userIdentityForm.valid) {
+          this.orderService.updateState('identity', this.userIdentityForm.value);
+          this.onNext(2); 
+      }
     }
 }

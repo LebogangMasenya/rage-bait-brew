@@ -16,7 +16,7 @@ import { drinks } from "../../data/drinks";
         <label>Base Type</label>
         <select formControlName="baseType" baseDrink>
           <option value="" disabled>Select a base</option>
-          @for (let drink of drinkBases) {
+          @for (drink of drinkBases; track drink) {
             <option value="{{ drink }}">{{ drink }}</option>
           }
         </select>
@@ -49,7 +49,7 @@ import { drinks } from "../../data/drinks";
   
   `,
   styles: '',
-  imports: [CommonModule, ReactiveFormsModule, BaseDrinkDirective, drinks]
+  imports: [CommonModule, ReactiveFormsModule, BaseDrinkDirective]
 })
 export class BaseStageComponent {
     // for choosing the foundation of the coffee
