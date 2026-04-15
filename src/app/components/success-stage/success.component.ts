@@ -187,10 +187,9 @@ const state = this.orderService.getState();
     ? `${state.base.coffeeSize} (${state.base.coffeeStrength})` 
     : 'Liquid Chaos';
 
-  const extras = state.ingredients?.extras ? state.ingredients.extras : '';
   const milk = state.ingredients?.milkType ? state.ingredients.milkType : '';
   const sugar = state.ingredients?.sugarAmount ? `${state.ingredients.sugarAmount} sugar` : '';
-  this.orderIngredients = extras || [];
+  this.orderIngredients = [milk, sugar].filter(Boolean); 
 
   const rawCard = state.payment?.cardNumber || '0000000000000000';
   this.orderPayment = `**** **** **** ${rawCard.toString().slice(-4)}`;

@@ -1,8 +1,12 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, Injectable } from '@angular/core';
 
 @Pipe({
   name: 'userIdentity',
-  pure: false 
+  standalone: true,
+  pure: true 
+})
+@Injectable({
+  providedIn: 'root'
 })
 export class UserIdentityPipe implements PipeTransform {
   transform(value: string, shift: number = 3): string {

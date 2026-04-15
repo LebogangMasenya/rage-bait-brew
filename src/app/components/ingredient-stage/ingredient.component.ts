@@ -21,7 +21,7 @@ import { Subscription } from "rxjs";
             <div class="option">
               <input type="radio"
                      [value]="ingredient.name" 
-                     formControlName="extras"
+                     formControlName="coffeeType"
                       id="{{ ingredient.name }}" />
 
               <span>{{ ingredient.name }}</span>
@@ -220,8 +220,7 @@ export class IngredientStageComponent implements OnInit, OnDestroy {
   ingredientForm = new FormGroup({
     coffeeType: new FormControl('', Validators.required),
     milkType: new FormControl('', Validators.required),
-    sugarAmount: new FormControl(0),
-    extras: new FormControl([] as string[])
+    sugarAmount: new FormControl(0)
   });
 
   ngOnInit() {
@@ -251,8 +250,7 @@ export class IngredientStageComponent implements OnInit, OnDestroy {
       this.orderService.updateState('ingredients', {
         coffeeType: this.ingredientForm.value.coffeeType || '',
         milkType: this.ingredientForm.value.milkType || '',
-        sugarAmount: this.ingredientForm.value.sugarAmount || 0,
-        extras: this.ingredientForm.value.extras || []
+        sugarAmount: this.ingredientForm.value.sugarAmount || 0
       });
       
       this.onNext(4);

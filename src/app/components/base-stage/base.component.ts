@@ -97,13 +97,12 @@ label {
   margin-bottom: 4px;
 }
 
-/* The Select Box - Make it look dated and stiff */
 select {
   appearance: none;
   padding: 10px;
   border: 2px solid #000;
   font-family: inherit;
-  cursor: help; /* Confuse them on what the cursor means */
+  cursor: help; 
 }
 
 /* Inputs */
@@ -111,7 +110,7 @@ input[type="number"] {
   border: 2px solid #000;
   padding: 10px;
   background: #333;
-  color: #fbff00; /* High contrast Lab look */
+  color: #fbff00; 
   font-size: 1.2rem;
 }
 
@@ -125,15 +124,14 @@ input:focus {
   margin-top: 5px;
   font-size: 0.7rem;
   font-weight: bold;
-  color: #0000ff; /* "Blue Screen of Death" Blue */
+  color: #0000ff; 
   min-height: 1rem;
 }
 
-/* The Next Button - The "Success" State */
 .next-btn {
   width: 100%;
   padding: 20px;
-  background: #00ff00; /* Obnoxious Neon Green */
+  background: #00ff00;
   color: #000;
   font-weight: 900;
   border: 4px solid #000;
@@ -146,7 +144,7 @@ input:focus {
   background: #555;
   color: #888;
   cursor: not-allowed;
-  filter: blur(1px); // weird blur
+  filter: blur(1px); 
 }
 
 .next-btn:not(:disabled):hover {

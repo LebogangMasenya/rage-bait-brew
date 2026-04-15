@@ -162,7 +162,7 @@ input:focus {
 export class IdentityStageComponent {
   @Input() onNext!: (nextStage: number) => void;
   private orderService = inject(OrderService);
-
+  private userNamePipe = inject(UserIdentityPipe);
 
   userIdentityForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -174,11 +174,16 @@ export class IdentityStageComponent {
     return `${name || ''}     ${phone || ''}`;
   }
 
+  getFormattedIdentity() {
+    const name =  this.userNamePipe.transform(this.userIdentityForm.value.name || '' , 3);
+    const phone = this.userIdentityForm.value.phone || '';
+    return { name, number: parseFloat(phone) || 0 };
+  }
+
   goToNextStep() {
     if (this.userIdentityForm.valid) {
       this.orderService.updateState('identity', 
-        {name: this.userIdentityForm.value.name || '', 
-        number: parseFloat(this.userIdentityForm.value?.phone || '1111111111') || 0});
+        { ...this.getFormattedIdentity() });
         alert(this.orderService.getState().identity?.name);
       this.onNext(2);
     }
